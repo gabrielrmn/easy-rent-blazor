@@ -1,0 +1,132 @@
+@page "/viewproperties"
+
+@using EasyRent.Shared
+@using EasyRent.Data.Models
+@using System.Net.Http;
+
+<div class="row">
+    <div class="col-md-12">
+        <RadzenTabs style="height: 880px" Class="col-md-12">
+            <Tabs>
+                <RadzenTabsItem Text="Apartments">
+                    <RadzenDataList PageSize="10" WrapItems="true" AllowPaging="true" Data="@iapts" TItem="Apartment">
+                        <Template Context="apt">
+                                <RadzenCard Class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div>
+                                                Owner: <b>@apt.owner</b>
+                                            </div>
+                                            <br />
+                                            <img src="apartment.png" style="width:150px;" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div style="margin-top:20px">
+                                                Suites: <b>@apt.suites</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Living Rooms: <b>@apt.livingRooms</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Dinning Rooms: <b>@apt.dinningRooms</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Parking Spaces: <b>@apt.parkingSpaces</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Area: <b>@apt.area</b>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div style="margin-top:20px">
+                                                Description: <b>@apt.description</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Floor: <b>@apt.floor</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Condominium Value: <b>$@apt.condominiumValue</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Parking Spaces: <b>@apt.parkingSpaces</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Imbued Closet: <b>@(apt.imbuedCloset==true? "Included" : "Not included")</b>
+                                            </div>
+                                            <div style="margin-top:20px">
+                                                Concierge Service: <b>@(apt.conciergeService==true? "Included" : "Not included")</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </RadzenCard>
+                        </Template>
+                    </RadzenDataList>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Houses">
+                    <RadzenDataList PageSize="10" WrapItems="true" AllowPaging="true" Data="@ihouses" TItem="House">
+                        <Template Context="house">
+                            <RadzenCard Class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div>
+                                            Owner: <b>@house.owner</b>
+                                        </div>
+                                        <br />
+                                        <img src="house.png" style="width:150px;" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div style="margin-top:20px">
+                                            Suites: <b>@house.suites</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Living Rooms: <b>@house.livingRooms</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Parking Spaces: <b>@house.parkingSpaces</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Area: <b>@house.area</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div style="margin-top:20px">
+                                            Description: <b>@house.description</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Parking Spaces: <b>@house.parkingSpaces</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Imbued Closet: <b>@(house.imbuedCloset==true? "Included" : "Not included")</b>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </RadzenCard>
+                        </Template>
+                    </RadzenDataList>
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </div>
+</div>
+@code {
+    IEnumerable<Apartment> iapts;
+    IEnumerable<House> ihouses;
+    List<Apartment> apts = new List<Apartment>();
+    List<House> houses = new List<House>();
+    HttpClient httpClient = new HttpClient();
+    protected override async Task OnParametersSetAsync()
+    {
+        apts = await httpClient.GetJsonAsync<List<Apartment>>("http://localhost:54781/apartment");
+        iapts = apts;
+        houses = await httpClient.GetJsonAsync<List<House>>("http://localhost:54781/house");
+        ihouses = houses;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        apts = await httpClient.GetJsonAsync<List<Apartment>>("http://localhost:54781/apartment");
+        iapts = apts;
+        houses = await httpClient.GetJsonAsync<List<House>>("http://localhost:54781/house");
+        ihouses = houses;
+    }
+}

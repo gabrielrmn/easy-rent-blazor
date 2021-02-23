@@ -1,0 +1,27 @@
+
+@page "/addproperty"
+
+@using EasyRent.Data.Services
+@using EasyRent.Data.Models
+@using System.Net.Http;
+
+<style>
+    form .row {
+        margin-bottom: 16px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-xl-6">
+        <RadzenTabs style="height: 880px">
+            <Tabs>
+                <RadzenTabsItem Text="Apartment">
+                    <ApartmentToRent />
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="House">
+                    <HouseToRent />
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </div>
+</div>
