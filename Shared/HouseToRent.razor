@@ -1,7 +1,8 @@
 @using EasyRent.Data.Models
 @using System.Net.Http;
 
- <RadzenCard Data="@house" Style="width:1200px; margin-bottom: 20px; height:800px;">
+@*<RadzenCard Data="@house" Style="width:1200px; margin-bottom: 20px; height:800px;">*@
+<RadzenCard Data="@house" Class="col-md-12">
         <div class="row">
             <div class="col-md-12">
                 <h3>Add House To Rent</h3>
@@ -9,40 +10,40 @@
                     <div class="align-items-center d-flex col-md-2">
                         <RadzenLabel Text="Bedrooms" />
                     </div>
-                    <div class="col-md-2">
-                        <RadzenNumeric Placeholder="0" style="width: 100%;" Name="Bedrooms" @bind-Value="house.bedrooms"/>
+                    <div class="col-md-6">
+                        <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Bedrooms" Min="0" @bind-Value="house.bedrooms" />
                     </div>
                 </div>
                 <div class="row" style="margin-top:20px">
                     <div class="align-items-center d-flex col-md-2">
                         <RadzenLabel Text="Suites" />
                     </div>
-                    <div class="col-md-2">
-                        <RadzenNumeric Placeholder="0" style="width: 100%;" Name="Suites" @bind-Value="house.suites" />
+                    <div class="col-md-6">
+                        <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Suites" Min="0" @bind-Value="house.suites" />
                     </div>
                 </div>
                 <div class="row" style="margin-top:20px">
                     <div class="align-items-center d-flex col-md-2">
                         <RadzenLabel Text="Living Rooms" />
                     </div>
-                    <div class="col-md-2">
-                        <RadzenNumeric Placeholder="0" style="width: 100%;" Name="LivingRooms" @bind-Value="house.livingRooms" />
+                    <div class="col-md-6">
+                        <RadzenNumeric Placeholder="0" style="width: 50%;" Name="LivingRooms" Min="0" @bind-Value="house.livingRooms" />
                     </div>
                 </div>
                 <div class="row" style="margin-top:20px">
                     <div class="align-items-center d-flex col-md-2">
                         <RadzenLabel Text="Parking Spaces" />
                     </div>
-                    <div class="col-md-2">
-                        <RadzenNumeric Placeholder="0" style="width: 100%;" Name="ParkingSpaces" @bind-Value="house.parkingSpaces" />
+                    <div class="col-md-6">
+                        <RadzenNumeric Placeholder="0" style="width: 50%;" Name="ParkingSpaces" Min="0" @bind-Value="house.parkingSpaces" />
                     </div>
                 </div>
                 <div class="row" style="margin-top:20px">
                     <div class="align-items-center d-flex col-md-2">
                         <RadzenLabel Text="Area (m²)" />
                     </div>
-                    <div class="col-md-2">
-                        <RadzenNumeric Placeholder="0" style="width: 100%;" Name="Area" @bind-Value="house.area" />
+                    <div class="col-md-6">
+                        <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Area" Min="0" @bind-Value="house.area" />
                     </div>
                 </div>
                 <div class="row" style="margin-top:20px">
@@ -78,11 +79,11 @@
         </div>
     </RadzenCard>
 
-@code {
-    House house = new House();
-    HttpClient httpClient = new HttpClient();
-    public async Task Submit()
-    {
-        await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/house", house);
+    @code {
+        House house = new House();
+        HttpClient httpClient = new HttpClient();
+        public async Task Submit()
+        {
+            await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/house", house);
+        }
     }
-}

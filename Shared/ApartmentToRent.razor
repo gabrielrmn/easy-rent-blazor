@@ -2,115 +2,116 @@
 @using EasyRent.Data.Models
 @using System.Net.Http;
 
- <RadzenCard Data="@apt" Style="width:1200px; margin-bottom: 20px; height:800px;">
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Add Apartment To Rent</h3>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Bedrooms" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="Bedrooms"  @bind-Value="apt.bedrooms" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Suites" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="Suites" @bind-Value="apt.suites" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Living Rooms" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="LivingRooms" @bind-Value="apt.livingRooms" />
-                        </div>
-                    </div>
+@*<RadzenCard Data="@apt" Style="width:1200px; margin-bottom: 20px; height:800px;">*@
+<RadzenCard Data="@apt" Class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Add Apartment To Rent</h3>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Bedrooms" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Bedrooms" Min="0" @bind-Value="apt.bedrooms" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Suites" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Suites" Min="0" @bind-Value="apt.suites" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Living Rooms" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="LivingRooms" Min="0" @bind-Value="apt.livingRooms" />
+                </div>
+            </div>
 
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Dinning Rooms" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="DinningRooms" @bind-Value="apt.dinningRooms" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Floor" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="Floor" @bind-Value="apt.floor" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Condominium Value" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="CondominiumValue" @bind-Value="apt.condominiumValue" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center text-align-center d-flex col-md-2">
-                            <RadzenLabel Text="Concierge Service" Style="margin-right: 5px" Component="ConciergeService" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenCheckBox @bind-Value="apt.conciergeService" TValue="bool" />
-                        </div>
-                    </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Dinning Rooms" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="DinningRooms" Min="0" @bind-Value="apt.dinningRooms" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Floor" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Floor" Min="0" @bind-Value="apt.floor" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Condominium Value" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="CondominiumValue" Min="0" @bind-Value="apt.condominiumValue" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center text-align-center d-flex col-md-2">
+                    <RadzenLabel Text="Concierge Service" Style="margin-right: 5px" Component="ConciergeService" />
+                </div>
+                <div class="col-md-2">
+                    <RadzenCheckBox @bind-Value="apt.conciergeService" TValue="bool" />
+                </div>
+            </div>
 
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Parking Spaces" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="ParkingSpaces" @bind-Value="apt.parkingSpaces" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center d-flex col-md-2">
-                            <RadzenLabel Text="Area (m²)" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenNumeric Placeholder="0" style="width: 100%;" Name="Area" @bind-Value="apt.area" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center text-align-center d-flex col-md-2">
-                            <RadzenLabel Text="Imbued Closet" Style="margin-right: 5px" Component="ImbuedCloset" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenCheckBox @bind-Value="apt.imbuedCloset" TValue="bool" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center text-align-center d-flex col-md-2">
-                            <RadzenLabel Text="Description" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenTextBox style="width: 100%;" Name="Description" @bind-Value="apt.description" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:20px">
-                        <div class="align-items-center text-align-center d-flex col-md-2">
-                            <RadzenLabel Text="Owner" />
-                        </div>
-                        <div class="col-md-2">
-                            <RadzenTextBox style="width: 100%;" Name="Owner" @bind-Value="apt.owner" />
-                        </div>
-                    </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Parking Spaces" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="ParkingSpaces" Min="0" @bind-Value="apt.parkingSpaces" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Area (m²)" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Area" Min="0" @bind-Value="apt.area" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center text-align-center d-flex col-md-2">
+                    <RadzenLabel Text="Imbued Closet" Style="margin-right: 5px" Component="ImbuedCloset" />
+                </div>
+                <div class="col-md-2">
+                    <RadzenCheckBox @bind-Value="apt.imbuedCloset" TValue="bool" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center text-align-center d-flex col-md-2">
+                    <RadzenLabel Text="Description" />
+                </div>
+                <div class="col-md-2">
+                    <RadzenTextBox style="width: 100%;" Name="Description" @bind-Value="apt.description" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center text-align-center d-flex col-md-2">
+                    <RadzenLabel Text="Owner" />
+                </div>
+                <div class="col-md-2">
+                    <RadzenTextBox style="width: 100%;" Name="Owner" @bind-Value="apt.owner" />
+                </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
-                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit())" />
-            </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit())" />
         </div>
+    </div>
     </RadzenCard>
 
 @code {

@@ -11,16 +11,16 @@
                 <RadzenTabsItem Text="Apartments">
                     <RadzenDataList PageSize="10" WrapItems="true" AllowPaging="true" Data="@iapts" TItem="Apartment">
                         <Template Context="apt">
-                                <RadzenCard Class="col-md-5">
+                                <RadzenCard Class="col-md-12 col-lg-5">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-lg-4 col-md-12">
                                             <div>
                                                 Owner: <b>@apt.owner</b>
                                             </div>
                                             <br />
-                                            <img src="apartment.png" style="width:150px;" />
+                                            <img src="apartment.png" style="max-width: 150px; width: 80%;" />
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-lg-4 col-md-12">
                                             <div style="margin-top:20px">
                                                 Suites: <b>@apt.suites</b>
                                             </div>
@@ -37,7 +37,7 @@
                                                 Area: <b>@apt.area</b>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-lg-4 col-md-12">
                                             <div style="margin-top:20px">
                                                 Description: <b>@apt.description</b>
                                             </div>
@@ -65,16 +65,16 @@
                 <RadzenTabsItem Text="Houses">
                     <RadzenDataList PageSize="10" WrapItems="true" AllowPaging="true" Data="@ihouses" TItem="House">
                         <Template Context="house">
-                            <RadzenCard Class="col-md-5">
+                            <RadzenCard Class="col-md-12 col-lg-5">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-lg-4 col-md-12">
                                         <div>
                                             Owner: <b>@house.owner</b>
                                         </div>
                                         <br />
-                                        <img src="house.png" style="width:150px;" />
+                                        <img src="house.png" style="max-width: 150px; width: 80%;"  />
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-lg-4 col-md-12">
                                         <div style="margin-top:20px">
                                             Suites: <b>@house.suites</b>
                                         </div>
@@ -88,7 +88,7 @@
                                             Area: <b>@house.area</b>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-lg-4 col-md-12">
                                         <div style="margin-top:20px">
                                             Description: <b>@house.description</b>
                                         </div>
