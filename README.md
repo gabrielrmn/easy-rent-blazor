@@ -31,12 +31,12 @@ dotnet watch run
 ```
 http://localhost:54781 
 ```
-
+  Execute os comandos SQL que estão no arquivo creates.sql.
 ## O que utilizamos?
 
 *  **Blazor** - [Framework](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
 *  **C#** - [Linguagem](https://docs.microsoft.com/en-us/dotnet/csharp/)
-* **MySql** - [Banco de Dados](https://www.mysql.com/)
+* **MySql** - [Banco de Dados](https://www.mysql.com/) 
 
 ## Contribuidores
 
