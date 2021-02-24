@@ -1,6 +1,7 @@
-@using EasyRent.Data.Services
 @using EasyRent.Data.Models
 @using System.Net.Http;
+@using System.Reflection;
+@inject NotificationService NotificationService
 
 <RadzenCard Data="@apt" Class="col-md-12">
     <div class="row">
@@ -11,7 +12,7 @@
                     <RadzenLabel Text="Bedrooms" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Bedrooms" Min="0" @bind-Value="apt.bedrooms" />
+                    <RadzenNumeric style="width: 50%;" Name="Bedrooms" Min="0" @bind-Value="apt.bedrooms" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -19,7 +20,7 @@
                     <RadzenLabel Text="Suites" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Suites" Min="0" @bind-Value="apt.suites" />
+                    <RadzenNumeric style="width: 50%;" Name="Suites" Min="0" @bind-Value="apt.suites" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -27,7 +28,7 @@
                     <RadzenLabel Text="Living Rooms" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="LivingRooms" Min="0" @bind-Value="apt.livingRooms" />
+                    <RadzenNumeric style="width: 50%;" Name="LivingRooms" Min="0" @bind-Value="apt.livingRooms" />
                 </div>
             </div>
 
@@ -36,7 +37,7 @@
                     <RadzenLabel Text="Dinning Rooms" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="DinningRooms" Min="0" @bind-Value="apt.dinningRooms" />
+                    <RadzenNumeric style="width: 50%;" Name="DinningRooms" Min="0" @bind-Value="apt.dinningRooms" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -44,7 +45,7 @@
                     <RadzenLabel Text="Floor" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Floor" Min="0" @bind-Value="apt.floor" />
+                    <RadzenNumeric style="width: 50%;" Name="Floor" Min="0" @bind-Value="apt.floor" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -52,7 +53,7 @@
                     <RadzenLabel Text="Condominium Value" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="CondominiumValue" Min="0" @bind-Value="apt.condominiumValue" />
+                    <RadzenNumeric style="width: 50%;" Name="CondominiumValue" Min="0" @bind-Value="apt.condominiumValue" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -69,7 +70,7 @@
                     <RadzenLabel Text="Parking Spaces" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="ParkingSpaces" Min="0" @bind-Value="apt.parkingSpaces" />
+                    <RadzenNumeric style="width: 50%;" Name="ParkingSpaces" Min="0" @bind-Value="apt.parkingSpaces" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -77,7 +78,7 @@
                     <RadzenLabel Text="Area (m²)" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Area" Min="0" @bind-Value="apt.area" />
+                    <RadzenNumeric style="width: 50%;" Name="Area" Min="0" @bind-Value="apt.area" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -109,7 +110,7 @@
                     <RadzenLabel Text="Rent Value" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Rent Value" Min="0" @bind-Value="apt.rentValue" />
+                    <RadzenNumeric style="width: 50%;" Name="Rent Value" Min="0" @bind-Value="apt.rentValue" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -135,7 +136,7 @@
             <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit())" />
         </div>
     </div>
-    </RadzenCard>
+</RadzenCard>
 
 @code {
     Apartment apt = new Apartment();
@@ -146,7 +147,35 @@
     }
     public async Task Submit()
     {
-        await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/apartment", apt);
+        if (!IsAnyNullOrEmpty(apt))
+        {
+            await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/apartment", apt);
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Detail = "Property submited!", Duration = 4000 });
+        }
+        else
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Error", Detail = "Please fill all fields!", Duration = 4000 });
+
         clearFields();
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+    }
+
+    bool IsAnyNullOrEmpty(Apartment p_apt)
+    {
+        foreach (PropertyInfo pi in p_apt.GetType().GetProperties())
+        {
+            if (pi.PropertyType == typeof(string) && pi.Name != "id")
+            {
+                string value = (string)pi.GetValue(p_apt);
+                if (string.IsNullOrEmpty(value))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

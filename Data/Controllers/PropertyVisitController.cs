@@ -17,8 +17,6 @@ namespace EasyRent.Data.Controllers
         [HttpPost]
         public void AddPropertyVisit(PropertyVisit p_visit)
         {
-            //string v_content = p_request.ReadAsStringAsync().Result;
-            //Apartment v_apt = JsonConvert.DeserializeObject<Apartment>(v_content);
             PropertyVisitManager v_visitManager = new PropertyVisitManager();
             v_visitManager.AddPropertyVisit(p_visit);
         }

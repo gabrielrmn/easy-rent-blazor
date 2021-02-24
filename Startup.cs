@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using EasyRent.Data;
-using EasyRent.Data.Services;
-using EasyRent.Data.Controllers;
+using Radzen;
 namespace EasyRent
 {
     public class Startup
@@ -29,15 +27,8 @@ namespace EasyRent
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            //services.AddSingleton<WeatherForecastService>();
             services.AddControllers();
-            //services.AddHttpClient<IApartmentService, ApartmentService>(client =>
-            //{
-            //    client.BaseAddress = new Uri("http://localhost:54781/");
-            //});
-
-
-            
+            services.AddScoped<NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

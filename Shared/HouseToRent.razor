@@ -1,5 +1,7 @@
 @using EasyRent.Data.Models
 @using System.Net.Http;
+@using System.Reflection;
+@inject NotificationService NotificationService
 
 @*<RadzenCard Data="@house" Style="width:1200px; margin-bottom: 20px; height:800px;">*@
 <RadzenCard Data="@house" Class="col-md-12">
@@ -11,7 +13,7 @@
                     <RadzenLabel Text="Bedrooms" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Bedrooms" Min="0" @bind-Value="house.bedrooms" />
+                    <RadzenNumeric style="width: 50%;" Name="Bedrooms" Min="0" @bind-Value="house.bedrooms" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -19,7 +21,7 @@
                     <RadzenLabel Text="Suites" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Suites" Min="0" @bind-Value="house.suites" />
+                    <RadzenNumeric style="width: 50%;" Name="Suites" Min="0" @bind-Value="house.suites" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -27,7 +29,7 @@
                     <RadzenLabel Text="Living Rooms" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="LivingRooms" Min="0" @bind-Value="house.livingRooms" />
+                    <RadzenNumeric style="width: 50%;" Name="LivingRooms" Min="0" @bind-Value="house.livingRooms" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -35,7 +37,7 @@
                     <RadzenLabel Text="Parking Spaces" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="ParkingSpaces" Min="0" @bind-Value="house.parkingSpaces" />
+                    <RadzenNumeric style="width: 50%;" Name="ParkingSpaces" Min="0" @bind-Value="house.parkingSpaces" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -43,7 +45,7 @@
                     <RadzenLabel Text="Area (m²)" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Area" Min="0" @bind-Value="house.area" />
+                    <RadzenNumeric style="width: 50%;" Name="Area" Min="0" @bind-Value="house.area" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -75,7 +77,7 @@
                     <RadzenLabel Text="Rent Value" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Rent Value" Min="0" @bind-Value="house.rentValue" />
+                    <RadzenNumeric style="width: 50%;" Name="Rent Value" Min="0" @bind-Value="house.rentValue" />
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
@@ -96,24 +98,53 @@
             </div>
         </div>
     </div>
-        <div class="row justify-content-center">
-            <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
-                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit())" />
-            </div>
+    <div class="row justify-content-center">
+        <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit())" />
         </div>
-    </RadzenCard>
+    </div>
+</RadzenCard>
 
-    @code {
-        House house = new House();
-        HttpClient httpClient = new HttpClient();
-        public void clearFields()
-        {
-            house = new House();
-        }
-        public async Task Submit()
+@code {
+    House house = new House();
+    HttpClient httpClient = new HttpClient();
+    public void clearFields()
+    {
+        house = new House();
+    }
+    public async Task Submit()
+    {
+
+        if (!IsAnyNullOrEmpty(house))
         {
             await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/house", house);
-            clearFields();
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Detail = "Property submited!", Duration = 4000 });
         }
+        else
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Warning, Summary = "Error", Detail = "Please fill all fields!", Duration = 4000 });
 
+        clearFields();
     }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+    }
+
+    bool IsAnyNullOrEmpty(House p_house)
+    {
+        foreach (PropertyInfo pi in p_house.GetType().GetProperties())
+        {
+            if (pi.PropertyType == typeof(string) && pi.Name != "id")
+            {
+                string value = (string)pi.GetValue(p_house);
+                if (string.IsNullOrEmpty(value))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+}

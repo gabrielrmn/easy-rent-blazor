@@ -17,8 +17,6 @@ namespace EasyRent.Data.Controllers
         [HttpPost]
         public void AddHouse(House p_house)
         {
-            //string v_content = p_request.ReadAsStringAsync().Result;
-            //Apartment v_apt = JsonConvert.DeserializeObject<Apartment>(v_content);
             HouseManager v_houseManager = new HouseManager();
             v_houseManager.AddHouse(p_house);
         }

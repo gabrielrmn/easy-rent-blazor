@@ -3,7 +3,7 @@
 @using EasyRent.Shared
 @using EasyRent.Data.Models
 @using System.Net.Http;
-
+@inject NotificationService NotificationService
 <div class="row">
     <div class="col-md-12">
         <RadzenTabs style="height: 880px" Class="col-md-12">
@@ -67,7 +67,7 @@
                                 </div
                                 @*Property Visits*@
                                 <div class="row mb-4 ml-3 mt-2">
-                                    <RadzenButton ButtonType="ButtonType.Button" Icon="save" Text="Agende sua Visita" ButtonStyle="ButtonStyle.Secondary" Click="@(() => { resetFields(); isVisible = new List<bool>(new bool[isVisible.Count]); isVisible[int.Parse(apt.id)-1] = !isVisible[int.Parse(apt.id)-1];})" />
+                                    <RadzenButton ButtonType="ButtonType.Button" Icon="save" Text="Schedule Your Visit" ButtonStyle="ButtonStyle.Secondary" Click="@(() => { resetFields(); isVisible = new List<bool>(new bool[isVisible.Count]); isVisible[int.Parse(apt.id)-1] = !isVisible[int.Parse(apt.id)-1];})" />
                                 </div>
                                 @if (isVisible[int.Parse(apt.id)-1])
                                 {
@@ -155,9 +155,9 @@
                                 </div>
                                 @*Property Visits*@
                                 <div class="row mb-4 ml-3 mt-2">
-                                    <RadzenButton ButtonType="ButtonType.Button" Icon="save" Text="Agende sua Visita" ButtonStyle="ButtonStyle.Secondary" Click="@(() => { resetFields(); isVisible = new List<bool>(new bool[isVisible.Count]); isVisible[int.Parse(house.id)-1] = !isVisible[int.Parse(house.id)-1];})" />
+                                    <RadzenButton ButtonType="ButtonType.Button" Icon="save" Text="Schedule Your Visit" ButtonStyle="ButtonStyle.Secondary" Click="@(() => { resetFields(); isVisible = new List<bool>(new bool[isVisible.Count]); isVisible[int.Parse(house.id)-1] = !isVisible[int.Parse(house.id)-1];})" />
                                 </div>
-                                @if (isVisible[int.Parse(house.id) - 1])
+                                @if (isVisible[int.Parse(house.id)-1])
                                 {
                                     <div class="visitsforms ml-3">
                                         <div class="row">
@@ -167,7 +167,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <RadzenTextBox style="width: 100%;" Name="Description" @bind-Value="visit.customer" />
-                                            </div>
+                                            </div
                                         </div>
 
                                         <div class="row">
@@ -176,13 +176,21 @@
                                             </div>
                                             @*Date Picker with time*@
                                             <div class="col-md-4 mt-1">
-                                                <RadzenDatePicker style="width:100%;" TValue="DateTime" ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10"
-                                                                  DateFormat="yyyy-dd-MM HH:mm" @bind-Value="visit.datetime" Change=@(async() => { await GetSchedules(house.id,"House", visit.datetime); }) />
+                                                <RadzenDatePicker style="width:100%;" TValue="DateTime" ShowTime="false" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10"
+                                                                  DateFormat="yyyy-dd-MM" @bind-Value="visit.datetime" Change=@(async() => { await GetSchedules(house.id,"House", visit.datetime); }) />
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="row dropdown md-2">
+                                            <div class="align-items-center text-align-center d-flex col-md-2">
+                                                <RadzenLabel Text="Hour" />
+                                            </div>
+                                            <div class="col-md-4 mt-1">
+                                                <RadzenDropDown style="width:100%;"AllowClear="true" TValue="string" Data=@schedule TextProperty="Schedules" ValueProperty="Schedule" @bind-Value="hour" />
+                                            </div>
+                                        </div>
+                                        </div>
                                     <div class="row mt-4 ml-3">
-                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit(house.id,"House"))" />
+                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit(house.id,"House"))"/>
                                     </div>
                                 }
 
@@ -230,7 +238,13 @@ public async Task Submit(String id, String type)
     visit.type = type;
     visit.datetime = DateTime.Parse(visit.datetime.ToString("yyyy-MM-dd HH:mm:ss").Split(" ")[0]+" "+ hour);
     await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/propertyvisit", visit);
+    ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Detail = "Property submited!", Duration = 4000 });
 
+}
+
+void ShowNotification(NotificationMessage message)
+{
+    NotificationService.Notify(message);
 }
 
 public void resetFields()
@@ -244,7 +258,7 @@ public async Task GetSchedules(String id,String type, DateTime datetime)
 {
     schedule = new List<String>();
     visit.propertyId = id;
-    visit.type = "Apartment";
+    visit.type = type;
     String date = datetime.ToString("yyyy-MM-dd HH:mm:ss").Split(" ")[0];
     @*await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/propertyvisit", visit);*@
     schedule = await httpClient.GetJsonAsync<List<String>>($"http://localhost:54781/propertyvisit?p_id={visit.propertyId}&p_type={visit.type}&p_date={date}");
