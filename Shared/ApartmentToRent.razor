@@ -2,7 +2,6 @@
 @using EasyRent.Data.Models
 @using System.Net.Http;
 
-@*<RadzenCard Data="@apt" Style="width:1200px; margin-bottom: 20px; height:800px;">*@
 <RadzenCard Data="@apt" Class="col-md-12">
     <div class="row">
         <div class="col-md-12">
@@ -93,7 +92,7 @@
                 <div class="align-items-center text-align-center d-flex col-md-2">
                     <RadzenLabel Text="Description" />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-6">
                     <RadzenTextBox style="width: 100%;" Name="Description" @bind-Value="apt.description" />
                 </div>
             </div>
@@ -101,8 +100,32 @@
                 <div class="align-items-center text-align-center d-flex col-md-2">
                     <RadzenLabel Text="Owner" />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-6">
                     <RadzenTextBox style="width: 100%;" Name="Owner" @bind-Value="apt.owner" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Rent Value" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenNumeric Placeholder="0" style="width: 50%;" Name="Rent Value" Min="0" @bind-Value="apt.rentValue" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="District" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenDropDown style="width:100%;" AllowClear="true" TValue="string" Data=@Constants.LISTADEBAIRROS TextProperty="Districts" ValueProperty="District" @bind-Value="apt.district" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="align-items-center d-flex col-md-2">
+                    <RadzenLabel Text="Address" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenTextBox style="width: 100%;" Name="Owner" @bind-Value="apt.address" />
                 </div>
             </div>
         </div>
@@ -117,8 +140,13 @@
 @code {
     Apartment apt = new Apartment();
     HttpClient httpClient = new HttpClient();
+    public void clearFields()
+    {
+        apt = new Apartment();
+    }
     public async Task Submit()
     {
         await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/apartment", apt);
+        clearFields();
     }
 }

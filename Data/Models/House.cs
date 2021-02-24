@@ -19,6 +19,9 @@ namespace EasyRent.Data.Models
         public bool imbuedCloset{ get; set; }
         public String description{ get; set; }
         public String owner{ get; set; }
+        public String rentValue { get; set; }
+        public String district { get; set; }
+        public String address { get; set; }
     }
     public class HouseManager
     {
@@ -29,8 +32,8 @@ namespace EasyRent.Data.Models
             MySqlConnection v_connection = ConnectionDB.connection();
             v_connection.Open();
             MySqlCommand v_query = v_connection.CreateCommand();
-            v_query.CommandText = "INSERT INTO easyrent.house (bedrooms, suites, livingRooms, parkingSpaces, area, imbuedCloset, description, owner) " +
-                $"values ('{p_house.bedrooms}','{p_house.suites}','{p_house.livingRooms}','{p_house.parkingSpaces}','{p_house.area}','{p_house.imbuedCloset}','{p_house.description}','{p_house.owner}')";
+            v_query.CommandText = "INSERT INTO easyrent.house (bedrooms, suites, livingRooms, parkingSpaces, area, imbuedCloset, description, owner, rentValue,district, address) " +
+                $"values ('{p_house.bedrooms}','{p_house.suites}','{p_house.livingRooms}','{p_house.parkingSpaces}','{p_house.area}','{p_house.imbuedCloset}','{p_house.description}','{p_house.owner}','{p_house.rentValue}','{p_house.district}','{p_house.address}')";
 
             try
             {
@@ -63,6 +66,9 @@ namespace EasyRent.Data.Models
                 t_house.description = m_fetchQuery["description"].ToString();
                 t_house.owner = m_fetchQuery["owner"].ToString();
                 t_house.imbuedCloset = (m_fetchQuery["imbuedCloset"].ToString() == "True") ? true : false;
+                t_house.rentValue = m_fetchQuery["rentValue"].ToString();
+                t_house.district = m_fetchQuery["district"].ToString();
+                t_house.address = m_fetchQuery["address"].ToString();
                 v_houses.Add(t_house);
             }
             v_connection.Close();

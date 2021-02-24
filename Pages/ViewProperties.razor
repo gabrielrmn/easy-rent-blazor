@@ -11,54 +11,101 @@
                 <RadzenTabsItem Text="Apartments">
                     <RadzenDataList PageSize="10" WrapItems="true" AllowPaging="true" Data="@iapts" TItem="Apartment">
                         <Template Context="apt">
-                                <RadzenCard Class="col-md-12 col-lg-5">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-12">
-                                            <div>
-                                                Owner: <b>@apt.owner</b>
-                                            </div>
-                                            <br />
-                                            <img src="apartment.png" style="max-width: 150px; width: 80%;" />
+                            @*@{bool isVisible = false;}*@
+                            <RadzenCard Class="col-md-12 col-lg-5">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-12">
+                                        <div>
+                                            Owner: <b>@apt.owner</b>
                                         </div>
-                                        <div class="col-lg-4 col-md-12">
-                                            <div style="margin-top:20px">
-                                                Suites: <b>@apt.suites</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Living Rooms: <b>@apt.livingRooms</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Dinning Rooms: <b>@apt.dinningRooms</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Parking Spaces: <b>@apt.parkingSpaces</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Area: <b>@apt.area</b>
-                                            </div>
+                                        <br />
+                                        <img src="apartment.png" style="max-width: 150px; width: 80%;" />
+                                    </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <div style="margin-top:20px">
+                                            Suites: <b>@apt.suites</b>
                                         </div>
-                                        <div class="col-lg-4 col-md-12">
-                                            <div style="margin-top:20px">
-                                                Description: <b>@apt.description</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Floor: <b>@apt.floor</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Condominium Value: <b>$@apt.condominiumValue</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Parking Spaces: <b>@apt.parkingSpaces</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Imbued Closet: <b>@(apt.imbuedCloset==true? "Included" : "Not included")</b>
-                                            </div>
-                                            <div style="margin-top:20px">
-                                                Concierge Service: <b>@(apt.conciergeService==true? "Included" : "Not included")</b>
-                                            </div>
+                                        <div style="margin-top:20px">
+                                            Living Rooms: <b>@apt.livingRooms</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Dinning Rooms: <b>@apt.dinningRooms</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Parking Spaces: <b>@apt.parkingSpaces</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Area: <b>@apt.area</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Rent: <b>$@apt.rentValue</b>
                                         </div>
                                     </div>
-                                </RadzenCard>
+                                    <div class="col-lg-4 col-md-12">
+                                        <div style="margin-top:20px">
+                                            Description: <b>@apt.description</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Floor: <b>@apt.floor</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Condominium Value: <b>$@apt.condominiumValue</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Parking Spaces: <b>@apt.parkingSpaces</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Imbued Closet: <b>@(apt.imbuedCloset==true? "Included" : "Not included")</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Concierge Service: <b>@(apt.conciergeService==true? "Included" : "Not included")</b>
+                                        </div>
+                                        <div style="margin-top:20px">
+                                            Address: <b>@apt.address</b>
+                                        </div>
+                                    </div>
+                                </div
+                                @*Property Visits*@
+                                <div class="row mb-4 ml-3 mt-2">
+                                    <RadzenButton ButtonType="ButtonType.Button" Icon="save" Text="Agende sua Visita" ButtonStyle="ButtonStyle.Secondary" Click="@(() => { resetFields(); isVisible = new List<bool>(new bool[isVisible.Count]); isVisible[int.Parse(apt.id)-1] = !isVisible[int.Parse(apt.id)-1];})" />
+                                </div>
+                                @if (isVisible[int.Parse(apt.id)-1])
+                                {
+                                    <div class="visitsforms ml-3">
+                                        <div class="row">
+
+                                            <div class="align-items-center text-align-center d-flex col-md-2">
+                                                <RadzenLabel Text="Name" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <RadzenTextBox style="width: 100%;" Name="Description" @bind-Value="visit.customer" />
+                                            </div
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="align-items-center text-align-center d-flex col-md-2">
+                                                <RadzenLabel Text="Date" />
+                                            </div>
+                                            @*Date Picker with time*@
+                                            <div class="col-md-4 mt-1">
+                                                <RadzenDatePicker style="width:100%;" TValue="DateTime" ShowTime="false" ShowSeconds="false" HoursStep="1.5" MinutesStep="5" SecondsStep="10"
+                                                                  DateFormat="yyyy-dd-MM" @bind-Value="visit.datetime" Change=@(async() => { await GetSchedules(apt.id,"Apartment", visit.datetime); }) />
+                                            </div>
+                                        </div>
+                                        <div class="row dropdown md-2">
+                                            <div class="align-items-center text-align-center d-flex col-md-2">
+                                                <RadzenLabel Text="Hour" />
+                                            </div>
+                                            <div class="col-md-4 mt-1">
+                                                <RadzenDropDown style="width:100%;"AllowClear="true" TValue="string" Data=@schedule TextProperty="Schedules" ValueProperty="Schedule" @bind-Value="hour" />
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <div class="row mt-4 ml-3">
+                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit(apt.id,"Apartment"))"/>
+                                    </div>
+                                }
+                            </RadzenCard>
                         </Template>
                     </RadzenDataList>
                 </RadzenTabsItem>
@@ -72,7 +119,7 @@
                                             Owner: <b>@house.owner</b>
                                         </div>
                                         <br />
-                                        <img src="house.png" style="max-width: 150px; width: 80%;"  />
+                                        <img src="house.png" style="max-width: 150px; width: 80%;" />
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <div style="margin-top:20px">
@@ -87,6 +134,9 @@
                                         <div style="margin-top:20px">
                                             Area: <b>@house.area</b>
                                         </div>
+                                        <div style="margin-top:20px">
+                                            Rent: <b>$@house.rentValue</b>
+                                        </div>
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <div style="margin-top:20px">
@@ -98,8 +148,43 @@
                                         <div style="margin-top:20px">
                                             Imbued Closet: <b>@(house.imbuedCloset==true? "Included" : "Not included")</b>
                                         </div>
+                                        <div style="margin-top:20px">
+                                            Address: <b>@house.address</b>
+                                        </div>
                                     </div>
                                 </div>
+                                @*Property Visits*@
+                                <div class="row mb-4 ml-3 mt-2">
+                                    <RadzenButton ButtonType="ButtonType.Button" Icon="save" Text="Agende sua Visita" ButtonStyle="ButtonStyle.Secondary" Click="@(() => { resetFields(); isVisible = new List<bool>(new bool[isVisible.Count]); isVisible[int.Parse(house.id)-1] = !isVisible[int.Parse(house.id)-1];})" />
+                                </div>
+                                @if (isVisible[int.Parse(house.id) - 1])
+                                {
+                                    <div class="visitsforms ml-3">
+                                        <div class="row">
+
+                                            <div class="align-items-center text-align-center d-flex col-md-2">
+                                                <RadzenLabel Text="Name" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <RadzenTextBox style="width: 100%;" Name="Description" @bind-Value="visit.customer" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="align-items-center text-align-center d-flex col-md-2">
+                                                <RadzenLabel Text="Date" />
+                                            </div>
+                                            @*Date Picker with time*@
+                                            <div class="col-md-4 mt-1">
+                                                <RadzenDatePicker style="width:100%;" TValue="DateTime" ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10"
+                                                                  DateFormat="yyyy-dd-MM HH:mm" @bind-Value="visit.datetime" Change=@(async() => { await GetSchedules(house.id,"House", visit.datetime); }) />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4 ml-3">
+                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Submit" ButtonStyle="ButtonStyle.Secondary" Click="@(async () => await Submit(house.id,"House"))" />
+                                    </div>
+                                }
 
                             </RadzenCard>
                         </Template>
@@ -115,18 +200,54 @@
     List<Apartment> apts = new List<Apartment>();
     List<House> houses = new List<House>();
     HttpClient httpClient = new HttpClient();
-    protected override async Task OnParametersSetAsync()
-    {
-        apts = await httpClient.GetJsonAsync<List<Apartment>>("http://localhost:54781/apartment");
-        iapts = apts;
-        houses = await httpClient.GetJsonAsync<List<House>>("http://localhost:54781/house");
-        ihouses = houses;
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        apts = await httpClient.GetJsonAsync<List<Apartment>>("http://localhost:54781/apartment");
-        iapts = apts;
-        houses = await httpClient.GetJsonAsync<List<House>>("http://localhost:54781/house");
-        ihouses = houses;
-    }
+    List<bool> isVisible = new List<bool>();
+    PropertyVisit visit = new PropertyVisit();
+    List<String> schedule = new List<String>();
+    String hour;
+
+    @*bool isVisible = false;*@
+protected override async Task OnParametersSetAsync()
+{
+    apts = await httpClient.GetJsonAsync<List<Apartment>>("http://localhost:54781/apartment");
+    iapts = apts;
+    houses = await httpClient.GetJsonAsync<List<House>>("http://localhost:54781/house");
+    ihouses = houses;
+    isVisible = new List<bool>(new bool[apts.Count]);
+
+}
+protected override async Task OnInitializedAsync()
+{
+    apts = await httpClient.GetJsonAsync<List<Apartment>>("http://localhost:54781/apartment");
+    iapts = apts;
+    houses = await httpClient.GetJsonAsync<List<House>>("http://localhost:54781/house");
+    ihouses = houses;
+    isVisible = new List<bool>(new bool[apts.Count]);
+}
+
+public async Task Submit(String id, String type)
+{
+    visit.propertyId = id;
+    visit.type = type;
+    visit.datetime = DateTime.Parse(visit.datetime.ToString("yyyy-MM-dd HH:mm:ss").Split(" ")[0]+" "+ hour);
+    await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/propertyvisit", visit);
+
+}
+
+public void resetFields()
+{
+    String hour=null;
+    visit = new PropertyVisit();
+    schedule = new List<String>();
+}
+
+public async Task GetSchedules(String id,String type, DateTime datetime)
+{
+    schedule = new List<String>();
+    visit.propertyId = id;
+    visit.type = "Apartment";
+    String date = datetime.ToString("yyyy-MM-dd HH:mm:ss").Split(" ")[0];
+    @*await httpClient.SendJsonAsync(HttpMethod.Post, "http://localhost:54781/propertyvisit", visit);*@
+    schedule = await httpClient.GetJsonAsync<List<String>>($"http://localhost:54781/propertyvisit?p_id={visit.propertyId}&p_type={visit.type}&p_date={date}");
+}
+
 }

@@ -22,6 +22,10 @@ namespace EasyRent.Data.Models
         public String condominiumValue { get; set; }
         public bool conciergeService { get; set; }
         public String owner { get; set; }
+        public String rentValue { get; set; }
+        public String district { get; set; }
+        public String address { get; set; }
+
     }
 
     public class ApartmentManager
@@ -33,9 +37,9 @@ namespace EasyRent.Data.Models
             MySqlConnection v_connection = ConnectionDB.connection();
             v_connection.Open();
             MySqlCommand v_query = v_connection.CreateCommand();
-            v_query.CommandText = "INSERT INTO easyrent.apartment (bedrooms, suites, livingRooms, parkingSpaces, area, imbuedCloset, description, `floor`, condominiumValue, conciergeService, owner) " +
+            v_query.CommandText = "INSERT INTO easyrent.apartment (bedrooms, suites, livingRooms, parkingSpaces, area, imbuedCloset, description, `floor`, condominiumValue, conciergeService, owner, rentValue, district, address) " +
                 $"values ('{p_apt.bedrooms}','{p_apt.suites}','{p_apt.livingRooms}','{p_apt.parkingSpaces}','{p_apt.area}','{p_apt.imbuedCloset}','{p_apt.description}','{p_apt.floor}','{p_apt.condominiumValue}'," +
-                $"'{p_apt.conciergeService}','{p_apt.owner}')";
+                $"'{p_apt.conciergeService}','{p_apt.owner}','{p_apt.rentValue}','{p_apt.district}','{p_apt.address}')";
 
             try
             {
@@ -71,6 +75,9 @@ namespace EasyRent.Data.Models
                 t_apt.owner = m_fetchQuery["owner"].ToString();
                 t_apt.conciergeService = (m_fetchQuery["conciergeService"].ToString() == "True") ? true : false;
                 t_apt.imbuedCloset = (m_fetchQuery["imbuedCloset"].ToString() == "True") ? true : false;
+                t_apt.rentValue= m_fetchQuery["rentValue"].ToString();
+                t_apt.district= m_fetchQuery["district"].ToString();
+                t_apt.address = m_fetchQuery["address"].ToString();
                 v_apts.Add(t_apt);
             }
             v_connection.Close();
